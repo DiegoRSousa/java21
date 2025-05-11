@@ -10,7 +10,7 @@ public class Main {
         var reserveController = new ReserveController();
         var resource = createResource();
 
-        try (var executor = Executors.newFixedThreadPool(10)) {
+        try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
             IntStream.range(0, 10).forEach(i -> {
                 var runnable = reserveController.execute(resource);
                 executor.submit(runnable);
