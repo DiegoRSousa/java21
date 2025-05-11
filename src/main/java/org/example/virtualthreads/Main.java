@@ -1,6 +1,7 @@
 package org.example.virtualthreads;
 
 import java.time.Duration;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -9,7 +10,12 @@ public class Main {
         var reserveController = new ReserveController();
         var resource = createResource();
 
-       IntStream.range(0, 10).forEach(i -> reserveController.execute(resource));
+        try (var executor = Executors.newFixedThreadPool(10)) {
+            IntStream.range(0, 10).forEach(i -> {
+                var runnable = reserveController.execute(resource);
+                executor.submit(runnable);
+            });
+        }
 
         var end = System.currentTimeMillis();
 
