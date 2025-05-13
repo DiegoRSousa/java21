@@ -18,33 +18,27 @@ public class Main {
         apply(new Credit(new BigDecimal(20)));
         System.out.println("Balance: " + balance);
 
+
+
     }
 
     static void add(Transaction transaction) {
-        if(transaction instanceof Credit) {
-            var c = (Credit) transaction;
+        if(transaction instanceof Credit c) {
             balance = balance.add(c.value());
-
         } else {
             throw new IllegalArgumentException("Transação inválida...");
         }
     }
 
     static void apply(Transaction transaction) {
-        if(transaction instanceof Debit d) {
-            if(d.isBlocked() && balance.compareTo(d.value()) >= 0) {
-                balance = balance.subtract(d.value());
-            }
-        } else if (transaction instanceof Credit c) {
-            if(c.isBlocked()) {
-                balance = balance.add(c.value());
-            }
-        } else {
-            throw new IllegalArgumentException("Transação inválida...");
+        switch (transaction) {
+            case Credit c when !c.isBlocked() -> balance = balance.add(c.value());
+            case Debit d when !d.isBlocked() && balance.compareTo(d.value()) >= 0 -> balance = balance.subtract(d.value());
+            default -> throw new IllegalArgumentException("Transação inválida...");
         }
     }
 }
-interface Transaction {
+sealed interface Transaction permits Debit, Credit {
     default boolean isBlocked() {
         return false;
     }
