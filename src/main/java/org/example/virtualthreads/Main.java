@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         var start = System.currentTimeMillis();
         var reserveController = new ReserveController();
-        var resource = createResource();
+        var resource = new Resource(new Address("Rua Teste", "123"));
 
         try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
             IntStream.range(0, 10).forEach(i -> {
@@ -20,15 +20,5 @@ public class Main {
         var end = System.currentTimeMillis();
 
         System.out.println("Duração: " + Duration.ofMillis(end - start).toSeconds());
-    }
-
-    private static Resource createResource() {
-        var address = new Address();
-        address.setNumber("123");
-        address.setStreetName("Rua teste");
-
-        var resource = new Resource(null);
-        resource.setAddress(address);
-        return resource;
     }
 }
