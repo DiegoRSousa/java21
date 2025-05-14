@@ -3,30 +3,30 @@ package org.example.sequencedcollection;
 import java.util.ArrayDeque;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.SequencedSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class Main {
     public static void main(String[] args) {
-        list();
-        deq();
-        sortedSet();
+//        list();
+//        deq();
+//        sortedSet();
         linkedHashSet();
     }
 
     static void list() {
         var langs = List.of("Java", "Elixir", "Rust", "Go", "JavaScript");
 
-        var first = langs.get(0);
+        var first = langs.getFirst();
         System.out.println("first: " + first);
 
-        var last  = langs.get(langs.size() - 1);
+        var last  = langs.getLast();
         System.out.println("last: " + last);
 
-        var newList = langs.reversed();
-        System.out.println("new: " + newList);
-
+        var reversed = langs.reversed();
+        System.out.println(reversed);
 
     }
 
@@ -38,6 +38,9 @@ public class Main {
 
         var last  = langs.getLast();
         System.out.println("last: " + last);
+
+        langs.addFirst("Lua");
+        System.out.println(langs);
 
     }
 
@@ -53,17 +56,27 @@ public class Main {
         System.out.println("first: " + first);
         var last = langs.last();
         System.out.println("last: " + last);
+
+
+        var removed = langs.removeLast();
+
+        System.out.println("Removed: " + removed);
+        System.out.println(langs);
+
     }
 
     static void linkedHashSet() {
-        Set<String> langs = new LinkedHashSet<>();
+        SequencedSet<String> langs = new LinkedHashSet<>();
         langs.add("Elixir");
         langs.add("Rust");
         langs.add("Java");
         langs.add("JavaScript");
         langs.add("Go");
 
-        var first = langs.iterator().next();
+        var first = langs.getFirst();
         System.out.println("first: " + first);
+
+        var last = langs.getLast();
+        System.out.println("last: " + last);
     }
 }
